@@ -1,0 +1,63 @@
+<html>
+
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+
+  <script type="module">
+
+    import * as behavior from '/pkg/vxr_behavior.js';
+    async function init() {
+      console.log(behavior);
+      await behavior.default();
+      behavior.behavior_init();
+      console.log("begin")
+      behavior.Pope.pope_says_hi();
+      console.log("end")
+    }
+    init();
+
+    AFRAME.registerComponent('on-hover-do-something', {
+      schema: {
+        color: { default: 'red' }
+      },
+
+      init: function () {
+        var data = this.data;
+        var el = this.el;  // <a-box>
+        var defaultColor = el.getAttribute('material').color;
+
+        el.addEventListener('mouseenter', function () {
+          el.setAttribute('color', data.color);
+          behavior.Pope.pope_says_hi();
+        });
+
+        el.addEventListener('mouseleave', function () {
+          el.setAttribute('color', defaultColor);
+        });
+      }
+    });
+
+    let entt = document.getElementById('cylinder-entity');
+    entt.setAttribute('on-hover-do-something', '');
+
+  </script>
+
+</head>
+
+<body>
+  <a-scene stats>
+    <a-camera>
+      <a-cursor></a-cursor>
+    </a-camera>
+    <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9" on-hover-do-something="color: blue"></a-box>
+    <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+    <a-cylinder id="cylinder-entity" position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+    <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+    <a-sky color="#ECECEC"></a-sky>
+  </a-scene>
+</body>
+
+</html>
